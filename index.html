@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#003366">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Defensa Técnica ONAT - MIPYME Importadora</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    :root {
+        --azul-principal: #003366;
+        --azul-claro: #0066cc;
+        --azul-suave: #e6f3ff;
+        --rojo-alerta: #c00;
+        --rojo-suave: #ffe6e6;
+        --verde-exito: #060;
+        --verde-suave: #e8f4e8;
+        --amarillo-norma: #fffbe6;
+        --amarillo-borde: #c90;
+        --gris-fondo: #f4f4f4;
+        --gris-texto: #444;
+        --gris-borde: #ddd;
+        --sombra: 0 2px 8px rgba(0,0,0,0.1);
+        --sombra-fuerte: 0 4px 16px rgba(0,0,0,0.15);
+        --radio: 10px;
+    }
+    
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+    }
+    
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.6;
+        color: #222;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+        min-height: 100vh;
+        padding-bottom: 80px;
+    }
+    
+    /* HEADER FIJO */
+    .app-header {
+        background: linear-gradient(135deg, var(--azul-principal) 0%, var(--azul-claro) 100%);
+        color: white;
+        padding: 20px 15px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: var(--sombra-fuerte);
+    }
+    
+    .app-header h1 {
+        font-size: 18px;
+        font-weight: 700;
+        text-align: center;
+        letter-spacing: 0.5px;
+    }
+    
+    .app-header .subtitulo {
+        font-size: 12px;
+        text-align: center;
+        opacity: 0.9;
+        margin-top: 5px;
+    }
+    
+    /* CONTENEDOR PRINCIPAL */
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 15px;
+    }
+    
+    /* TARJETA DE RESUMEN */
+    .resumen-card {
+        background: white;
+        border-radius: var(--radio);
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: var(--sombra);
+        border-left: 5px solid var(--azul-principal);
+    }
+    
+    .resumen-card h2 {
+        color: var(--azul-principal);
+        font-size: 18px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .resumen-card p {
+        font-size: 14px;
+        color: var(--gris-texto);
+        margin-bottom: 10px;
+    }
+    
+    /* NAVEGACIÓN POR PESTAÑAS */
+    .tabs-nav {
+        display: flex;
+        overflow-x: auto;
+        background: white;
+        border-radius: var(--radio);
+        margin-bottom: 15px;
+        box-shadow: var(--sombra);
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        position: sticky;
+        top: 75px;
+        z-index: 50;
+    }
+    
+    .tabs-nav::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .tab-btn {
+        flex: 0 0 auto;
+        padding: 14px 18px;
+        background: transparent;
+        border: none;
+        color: var(--gris-texto);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s;
+    }
+    
+    .tab-btn.active {
+        color: var(--azul-principal);
+        border-bottom-color: var(--azul-principal);
+        background: var(--azul-suave);
+    }
+    
+    /* SECCIONES */
+    .tab-content {
+        display: none;
+        animation: fadeIn 0.4s;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* ACORDEONES */
+    .accordion {
+        background: white;
+        border-radius: var(--radio);
+        margin-bottom: 12px;
+        box-shadow: var(--sombra);
+        overflow: hidden;
+    }
+    
+    .accordion-header {
+        padding: 16px;
+        background: white;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        color: var(--azul-principal);
+        font-size: 15px;
+        border-left: 4px solid var(--azul-principal);
+        transition: background 0.2s;
+    }
+    
+    .accordion-header:active {
+        background: var(--azul-suave);
+    }
+    
+    .accordion-header .icon {
+        transition: transform 0.3s;
+        font-size: 18px;
+    }
+    
+    .accordion.open .accordion-header .icon {
+        transform: rotate(180deg);
+    }
+    
+    .accordion-body {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out;
+        padding: 0 16px;
+    }
+    
+    .accordion.open .accordion-body {
+        max-height: 5000px;
+        padding: 16px;
+        border-top: 1px solid var(--gris-borde);
+    }
+    
+    /* CAJAS DE CONTENIDO */
+    .norma-box {
+        background: var(--amarillo-norma);
+        border-left: 4px solid var(--amarillo-borde);
+        padding: 15px;
+        margin: 12px 0;
+        border-radius: 6px;
+        font-size: 14px;
+        color: var(--gris-texto);
+    }
+    
+    .norma-box strong {
+        color: var(--azul-principal);
+    }
+    
+    .argumento-box {
+        background: var(--verde-suave);
+        border-left: 4px solid var(--verde-exito);
+        padding: 15px;
+        margin: 12px 0;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+    
+    .alerta-box {
+        background: var(--rojo-suave);
+        border-left: 4px solid var(--rojo-alerta);
+        padding: 15px;
+        margin: 12px 0;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #600;
+    }
+    
+    .info-box {
+        background: var(--azul-suave);
+        border-left: 4px solid var(--azul-claro);
+        padding: 15px;
+        margin: 12px 0;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+    
+    /* TABLAS RESPONSIVE */
+    .table-wrapper {
+        overflow-x: auto;
+        margin: 15px 0;
+        border-radius: 8px;
+        box-shadow: var(--sombra);
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        font-size: 13px;
+        min-width: 500px;
+    }
+    
+    th {
+        background: var(--azul-principal);
+        color: white;
+        padding: 12px 10px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 12px;
+        position: sticky;
+        top: 0;
+    }
+    
+    td {
+        padding: 10px;
+        border-bottom: 1px solid var(--gris-borde);
+    }
+    
+    tr:nth-child(even) {
+        background: #fafafa;
+    }
+    
+    tr:hover {
+        background: var(--azul-suave);
+    }
+    
+    /* CALCULADORA INTERACTIVA */
+    .calculadora {
+        background: white;
+        border-radius: var(--radio);
+        padding: 20px;
+        margin: 15px 0;
+        box-shadow: var(--sombra);
+    }
+    
+    .calculadora h3 {
+        color: var(--azul-principal);
+        font-size: 16px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    
+    .input-group {
+        margin-bottom: 15px;
+    }
+    
+    .input-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--gris-texto);
+        margin-bottom: 6px;
+    }
+    
+    .input-group input, .input-group select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid var(--gris-borde);
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.2s;
+    }
+    
+    .input-group input:focus, .input-group select:focus {
+        outline: none;
+        border-color: var(--azul-claro);
+    }
+    
+    .btn-calcular {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, var(--azul-principal), var(--azul-claro));
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: var(--sombra);
+        transition: transform 0.2s;
+    }
+    
+    .btn-calcular:active {
+        transform: scale(0.98);
+    }
+    
+    .resultado {
+        margin-top: 15px;
+        padding: 15px;
+        background: var(--verde-suave);
+        border-radius: 8px;
+        border-left: 4px solid var(--verde-exito);
+        display: none;
+    }
+    
+    .resultado.visible {
+        display: block;
+        animation: fadeIn 0.4s;
+    }
+    
+    .resultado-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px dashed #ccc;
+        font-size: 14px;
+    }
+    
+    .resultado-item:last-child {
+        border-bottom: none;
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--verde-exito);
+        padding-top: 12px;
+    }
+    
+    /* GRÁFICO DE SEGMENTOS */
+    .segmentos-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin: 15px 0;
+    }
+    
+    @media (min-width: 600px) {
+        .segmentos-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    
+    .segmento-card {
+        padding: 18px;
+        border-radius: var(--radio);
+        text-align: center;
+        color: white;
+        box-shadow: var(--sombra);
+    }
+    
+    .segmento-1 { background: linear-gradient(135deg, #2c3e50, #34495e); }
+    .segmento-2 { background: linear-gradient(135deg, var(--azul-principal), var(--azul-claro)); }
+    .segmento-3 { background: linear-gradient(135deg, var(--rojo-alerta), #e74c3c); }
+    
+    .segmento-card h4 {
+        font-size: 14px;
+        margin-bottom: 8px;
+        opacity: 0.9;
+    }
+    
+    .segmento-card .tasa {
+        font-size: 28px;
+        font-weight: 800;
+        margin: 8px 0;
+    }
+    
+    .segmento-card .descripcion {
+        font-size: 12px;
+        opacity: 0.9;
+        line-height: 1.4;
+    }
+    
+    /* TIMELINE DE EJEMPLO */
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+        margin: 20px 0;
+    }
+    
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 10px;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--azul-principal);
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 20px;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: var(--sombra);
+    }
+    
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -25px;
+        top: 20px;
+        width: 15px;
+        height: 15px;
+        background: var(--azul-principal);
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 0 0 2px var(--azul-principal);
+    }
+    
+    .timeline-item .fecha {
+        font-size: 12px;
+        color: var(--azul-claro);
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+    
+    .timeline-item h4 {
+        font-size: 15px;
+        color: var(--azul-principal);
+        margin-bottom: 8px;
+    }
+    
+    .timeline-item p {
+        font-size: 13px;
+        color: var(--gris-texto);
+    }
+    
+    /* COMPARADOR VISUAL */
+    .comparador {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin: 15px 0;
+    }
+    
+    @media (min-width: 600px) {
+        .comparador {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    
+    .comparador-item {
+        padding: 15px;
+        border-radius: var(--radio);
+        border: 2px solid;
+    }
+    
+    .comparador-correcto {
+        background: var(--verde-suave);
+        border-color: var(--verde-exito);
+    }
+    
+    .comparador-incorrecto {
+        background: var(--rojo-suave);
+        border-color: var(--rojo-alerta);
+    }
+    
+    .comparador-item h4 {
+        font-size: 15px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .comparador-correcto h4 { color: var(--verde-exito); }
+    .comparador-incorrecto h4 { color: var(--rojo-alerta); }
+    
+    .comparador-item ul {
+        list-style: none;
+        font-size: 13px;
+    }
+    
+    .comparador-item li {
+        padding: 5px 0;
+        padding-left: 20px;
+        position: relative;
+    }
+    
+    .comparador-correcto li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: var(--verde-exito);
+        font-weight: 700;
+    }
+    
+    .comparador-incorrecto li::before {
+        content: '✗';
+        position: absolute;
+        left: 0;
+        color: var(--rojo-alerta);
+        font-weight: 700;
+    }
+    
+    /* FLECHA DE VOLVER */
+    .back-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: var(--azul-principal);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+        box-shadow: var(--sombra-fuerte);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 99;
+    }
+    
+    .back-top.visible {
+        display: flex;
+    }
+    
+    /* FOOTER */
+    .app-footer {
+        background: white;
+        padding: 20px;
+        margin-top: 30px;
+        text-align: center;
+        border-radius: var(--radio);
+        box-shadow: var(--sombra);
+        font-size: 12px;
+        color: var(--gris-texto);
+    }
+    
+    /* UTILIDADES */
+    .destacado {
+        background: linear-gradient(120deg, #ffd700 0%, #ffd700 100%);
+        background-repeat: no-repeat;
+        background-size: 100% 40%;
+        background-position: 0 90%;
+        padding: 0 3px;
+        font-weight: 700;
+    }
+    
+    .emoji {
+        font-size: 20px;
+        margin-right: 5px;
+    }
+    
+    /* RESPONSIVE TABLET */
+    @media (min-width: 768px) {
+        .app-header h1 { font-size: 24px; }
+        .resumen-card h2 { font-size: 22px; }
+        .accordion-header { font-size: 17px; }
+        table { font-size: 14px; }
+    }
+    
+    /* MODO IMPRESIÓN */
+    @media print {
+        .app-header, .tabs-nav, .back-top, .calculadora, .btn-calcular { display: none; }
+        .tab-content { display: block !important; page-break-inside: avoid; }
+        body { background: white; }
+        .container { max-width: 100%; padding: 0; }
+    }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+    <h1>📊 DEFENSA TÉCNICA ONAT</h1>
+    <div class="subtitulo">MIPYME Importadora | Segmentos Cambiarios BCC</div>
+</header>
+
+<div class="container">
+
+    <!-- RESUMEN EJECUTIVO -->
+    <div class="resumen-card">
+        <h2><span class="emoji">🎯</span>Resumen Ejecutivo</h2>
+        <p><strong>Problema:</strong> La ONAT pretende que registremos nuestras importaciones a la "tasa flotante" cuando la importadora estatal MAPRINT nos facturó a <strong>120 CUP/USD (Segmento II)</strong>.</p>
+        <p><strong>Nuestra Defensa:</strong> La contabilidad se rige por el <span class="destacado">Costo Histórico</span> según la <strong>NEC 17</strong> (Resolución 373/2025 del MFP) y los documentos fuente emitidos por el Estado.</p>
+        <p><strong>Base Legal:</strong> Resolución 127/2025 del BCC, Resolución 373/2025 del MFP, NEC 17, NEC 6 y Ley 113 del Sistema Tributario.</p>
+    </div>
+
+    <!-- NAVEGACIÓN POR PESTAÑAS -->
+    <nav class="tabs-nav" id="tabsNav">
+        <button class="tab-btn active" data-tab="tab1">📜 Normas</button>
+        <button class="tab-btn" data-tab="tab2">💱 Segmentos</button>
+        <button class="tab-btn" data-tab="tab3">📚 NEC 17</button>
+        <button class="tab-btn" data-tab="tab4">🧮 Calculadora</button>
+        <button class="tab-btn" data-tab="tab5">📒 Kardex</button>
+        <button class="tab-btn" data-tab="tab6">📝 Asientos</button>
+        <button class="tab-btn" data-tab="tab7">💰 Precios</button>
+        <button class="tab-btn" data-tab="tab8">🛡️ Defensa</button>
+    </nav>
+
+    <!-- TAB 1: NORMAS -->
+    <div class="tab-content active" id="tab1">
+        
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>📋 Resolución 127/2025 del BCC</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <p><strong>Publicada:</strong> Gaceta Oficial No. 94 Ordinaria, 18 de diciembre de 2025</p>
+                <div class="norma-box">
+                    <strong>Articulado - Segmentos Cambiarios:</strong><br><br>
+                    "Se establecen tres segmentos cambiarios diferenciados:<br>
+                    a) <strong>Segmento I:</strong> Tasa fija de 24 CUP/USD<br>
+                    b) <strong>Segmento II:</strong> Tasa fija de 120 CUP/USD<br>
+                    c) <strong>Segmento III:</strong> Tasa flotante"<br><br>
+                    <strong>Por Cuanto:</strong> La resolución reconoce la "implementación gradual, ordenada y diferenciada" de la política cambiaria.
+                </div>
+                <div class="argumento-box">
+                    <strong>Clave para nuestra defensa:</strong> El Segmento II (120 CUP/USD) existe legalmente y fue aplicado a nuestras operaciones por el propio Estado.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>📋 Resolución 373/2025 del MFP</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <p><strong>Publicada:</strong> Enero 2026 - Modifica la NEC 17</p>
+                <div class="norma-box">
+                    <strong>Extractos clave:</strong><br><br>
+                    "Las transacciones en moneda extranjera se registrarán aplicando el <strong>tipo de cambio del segmento por el cual se canalizó la operación</strong> en la fecha de la transacción.<br><br>
+                    Las partidas no monetarias medidas al <strong>costo histórico NO se revaluarán posteriormente</strong> por variaciones del tipo de cambio.<br><br>
+                    Los registros deben basarse estrictamente en la <strong>documentación fuente primaria</strong>."
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>📋 NEC 6 - Inventarios</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="norma-box">
+                    <strong>Valoración de Inventarios:</strong><br><br>
+                    "Los inventarios se valorarán al <strong>precio de adquisición o al costo</strong>.<br><br>
+                    El costo de los inventarios importados se determinará sobre la base de los <strong>documentos aduaneros y facturas nacionales</strong> emitidas por las entidades importadoras autorizadas."
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>📋 Ley 113 del Sistema Tributario</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="norma-box">
+                    "La determinación de la base imponible se realizará sobre la base de los <strong>resultados financieros reflejados en la contabilidad</strong>, llevada conforme a las normas del Ministerio de Finanzas y Precios."
+                </div>
+                <div class="argumento-box">
+                    <strong>Conclusión:</strong> Si mi contabilidad cumple las NEC del MFP, mi base imponible es correcta según la Ley 113.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TAB 2: SEGMENTOS -->
+    <div class="tab-content" id="tab2">
+        
+        <div class="resumen-card">
+            <h2><span class="emoji">💱</span>Los 3 Segmentos del BCC</h2>
+            <p>La Resolución 127/2025 establece tres segmentos cambiarios. Nuestras operaciones fueron canalizadas por el <strong>Segmento II</strong>.</p>
+        </div>
+
+        <div class="segmentos-grid">
+            <div class="segmento-card segmento-1">
+                <h4>SEGMENTO I</h4>
+                <div class="tasa">24</div>
+                <div class="descripcion">CUP por USD<br>Sector estatal</div>
+            </div>
+            <div class="segmento-card segmento-2">
+                <h4>SEGMENTO II</h4>
+                <div class="tasa">120</div>
+                <div class="descripcion">CUP por USD<br>Entidades autorizadas</div>
+            </div>
+            <div class="segmento-card segmento-3">
+                <h4>SEGMENTO III</h4>
+                <div class="tasa">Flotante</div>
+                <div class="descripcion">Tasa diaria BCC<br>Población y MIPYMES</div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>🔍 ¿Qué significa cada segmento?</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="info-box">
+                    <strong>Segmento I (24 CUP/USD):</strong> Operaciones del sector estatal básico. No aplica a MIPYMES.
+                </div>
+                <div class="info-box">
+                    <strong>Segmento II (120 CUP/USD):</strong> Operaciones canalizadas por entidades autorizadas (como MAPRINT). Fue aplicado a nuestras importaciones durante el período fiscalizado.
+                </div>
+                <div class="info-box">
+                    <strong>Segmento III (Tasa Flotante):</strong> Tasa publicada diariamente por el BCC. Aplica a partir del 1 de octubre para nuestras operaciones con MAPRINT.
+                </div>
+            </div>
+        </div>
+
+        <div class="alerta-box">
+            <strong>⚠️ PUNTO CLAVE:</strong> La ONAT no puede exigirnos registrar a tasa flotante cuando MAPRINT nos facturó a 120 CUP/USD (Segmento II). Sería obligarnos a falsear la contabilidad.
+        </div>
+
+    </div>
+
+    <!-- TAB 3: NEC 17 COMPLETA -->
+    <div class="tab-content" id="tab3">
+        
+        <div class="resumen-card">
+            <h2><span class="emoji">📚</span>NEC 17 - Operaciones con Moneda Extranjera</h2>
+            <p>La norma contable que rige cómo debemos registrar las operaciones en divisas. Es nuestra principal defensa técnica.</p>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>🎯 Principio Fundamental: Costo Histórico</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="norma-box">
+                    "Toda transacción en moneda extranjera se registrará en CUP aplicando el <strong>tipo de cambio vigente en la fecha de la transacción</strong>.<br><br>
+                    En el esquema actual, el tipo de cambio será el correspondiente al <strong>segmento por el cual se canalizó legalmente la operación</strong>."
+                </div>
+                <div class="argumento-box">
+                    <strong>Traducción práctica:</strong> Si MAPRINT nos facturó a 120 CUP/USD el día de la compra, ese es el costo histórico de la mercancía. Punto.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>💰 Partidas Monetarias vs No Monetarias</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <p>La NEC 17 divide los activos en dos categorías con tratamientos diferentes:</p>
+                
+                <div class="comparador">
+                    <div class="comparador-item comparador-correcto">
+                        <h4>✓ Partidas Monetarias</h4>
+                        <ul>
+                            <li>Dinero en caja</li>
+                            <li>Bancos en divisas</li>
+                            <li>Cuentas por cobrar en USD</li>
+                            <li>Cuentas por pagar en USD</li>
+                            <li><strong>SÍ se ajustan</strong> por diferencias de cambio</li>
+                        </ul>
+                    </div>
+                    <div class="comparador-item comparador-incorrecto">
+                        <h4>✗ Partidas No Monetarias</h4>
+                        <ul>
+                            <li><strong>Inventarios (Mercancías)</strong></li>
+                            <li>Activos Fijos</li>
+                            <li>Inversiones</li>
+                            <li>Intangibles</li>
+                            <li><strong>NO se revalúan</strong> por fluctuaciones cambiarias</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="alerta-box">
+                    <strong>🎯 CONCLUSIÓN CRÍTICA:</strong> El inventario es una Partida No Monetaria. Una vez registrado al costo histórico, NO se puede revaluar aunque la tasa flotante cambie diariamente.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>📅 Medición Posterior al Reconocimiento</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="norma-box">
+                    <strong>Para Partidas No Monetarias (INVENTARIOS):</strong><br><br>
+                    "Las partidas no monetarias medidas al costo histórico se convertirán utilizando el tipo de cambio de la fecha de la transacción y <strong>NO se revaluarán posteriormente por variaciones del tipo de cambio</strong>.<br><br>
+                    El costo histórico de los inventarios importados queda <strong>fijado en el momento de su adquisición</strong> y no se ajustará por fluctuaciones cambiarias posteriores."
+                </div>
+                <div class="argumento-box">
+                    <strong>Ejemplo:</strong> Si importé mercancía el 15 de marzo a 120 CUP/USD, ese costo queda congelado. Aunque mañana la tasa flotante esté a 500, mi inventario sigue valiendo contablemente 120.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>🔬 Aplicación Práctica Paso a Paso</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="fecha">DÍA 1 - Importación</div>
+                        <h4>MAPRINT factura a 120 CUP/USD</h4>
+                        <p>Valor: 10,000 USD × 120 = <strong>1,200,000 CUP</strong><br>
+                        Registro: Inventario 1,200,000 / Banco 1,200,000</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="fecha">DÍA 30 - Tasa flotante sube</div>
+                        <h4>Tasa flotante del BCC: 450 CUP/USD</h4>
+                        <p>¿Revalúo mi inventario a 4,500,000 CUP?<br>
+                        <strong>NO</strong> - La NEC 17 lo prohíbe. Mi inventario sigue valiendo 1,200,000 CUP.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="fecha">DÍA 60 - Venta</div>
+                        <h4>Vendo la mercancía</h4>
+                        <p>El costo de venta sale del Kardex: <strong>1,200,000 CUP</strong><br>
+                        El precio de venta puede considerar la tasa actual (450) para no descapitalizarme, pero el costo contable es el histórico.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TAB 4: CALCULADORA -->
+    <div class="tab-content" id="tab4">
+        
+        <div class="resumen-card">
+            <h2><span class="emoji">🧮</span>Calculadora de Registro Contable</h2>
+            <p>Demuestra cómo se registra correctamente una importación según el segmento aplicado por MAPRINT.</p>
+        </div>
+
+        <div class="calculadora">
+            <h3>💡 Simulador de Importación</h3>
+            
+            <div class="input-group">
+                <label>Valor de la mercancía en USD:</label>
+                <input type="number" id="valorUSD" value="10000" min="0" step="100">
+            </div>
+
+            <div class="input-group">
+                <label>Segmento aplicado por MAPRINT:</label>
+                <select id="segmento">
+                    <option value="120">Segmento II - 120 CUP/USD (Fijo)</option>
+                    <option value="flotante">Segmento III - Tasa Flotante</option>
+                </select>
+            </div>
+
+            <div class="input-group" id="tasaFlotanteGroup" style="display:none;">
+                <label>Tasa flotante del día (CUP/USD):</label>
+                <input type="number" id="tasaFlotante" value="450" min="0" step="1">
+            </div>
+
+            <div class="input-group">
+                <label>Gastos adicionales (flete, aranceles, etc.) en CUP:</label>
+                <input type="number" id="gastos" value="50000" min="0" step="1000">
+            </div>
+
+            <button class="btn-calcular" onclick="calcular()">📊 Calcular Registro Contable</button>
+
+            <div class="resultado" id="resultado">
+                <div class="resultado-item">
+                    <span>Valor en USD:</span>
+                    <span id="resUSD">-</span>
+                </div>
+                <div class="resultado-item">
+                    <span>Tasa aplicada:</span>
+                    <span id="resTasa">-</span>
+                </div>
+                <div class="resultado-item">
+                    <span>Contravalor en CUP:</span>
+                    <span id="resContravalor">-</span>
+                </div>
+                <div class="resultado-item">
+                    <span>(+) Gastos adicionales:</span>
+                    <span id="resGastos">-</span>
+                </div>
+                <div class="resultado-item">
+                    <span>COSTO TOTAL INVENTARIO:</span>
+                    <span id="resTotal">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="alerta-box">
+            <strong>⚠️ IMPORTANTE:</strong> Este costo total es el que se registra en el Inventario (Debe) y en el Banco (Haber). La partida doble cuadra perfectamente porque el banco realmente debitó ese monto.
+        </div>
+
+    </div>
+
+    <!-- TAB 5: KARDEX -->
+    <div class="tab-content" id="tab5">
+        
+        <div class="resumen-card">
+            <h2><span class="emoji">📒</span>Kardex con Promedio Ponderado</h2>
+            <p>Así se maneja el inventario cuando entran mercancías a distintas tasas de cambio.</p>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>📊 Ejemplo Práctico de Kardex</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Concepto</th>
+                                <th>Ent. (Und)</th>
+                                <th>C.U.</th>
+                                <th>Total</th>
+                                <th>Sal. (Und)</th>
+                                <th>C.U.</th>
+                                <th>Total</th>
+                                <th>Saldo Und</th>
+                                <th>C.U. Prom</th>
+                                <th>Saldo Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>01/Oct</td>
+                                <td>Saldo inicial</td>
+                                <td>-</td><td>-</td><td>-</td>
+                                <td>-</td><td>-</td><td>-</td>
+                                <td><strong>100</strong></td>
+                                <td><strong>120</strong></td>
+                                <td><strong>12,000</strong></td>
+                            </tr>
+                            <tr>
+                                <td>05/Oct</td>
+                                <td>Venta</td>
+                                <td>-</td><td>-</td><td>-</td>
+                                <td>50</td><td>120</td><td>6,000</td>
+                                <td><strong>50</strong></td>
+                                <td><strong>120</strong></td>
+                                <td><strong>6,000</strong></td>
+                            </tr>
+                            <tr style="background:#fffbe6;">
+                                <td>15/Oct</td>
+                                <td>Importación (Tasa 350)</td>
+                                <td>100</td><td>350</td><td>35,000</td>
+                                <td>-</td><td>-</td><td>-</td>
+                                <td><strong>150</strong></td>
+                                <td><strong>273.33</strong></td>
+                                <td><strong>41,000</strong></td>
+                            </tr>
+                            <tr>
+                                <td>20/Oct</td>
+                                <td>Venta</td>
+                                <td>-</td><td>-</td><td>-</td>
+                                <td>80</td><td>273.33</td><td>21,866</td>
+                                <td><strong>70</strong></td>
+                                <td><strong>273.33</strong></td>
+                                <td><strong>19,134</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box">
+                    <strong>📐 Cálculo del Promedio (15/Oct):</strong><br>
+                    (6,000 + 35,000) ÷ 150 unidades = <strong>273.33 CUP/unidad</strong><br><br>
+                    A partir de ese momento, todas las ventas usan ese costo promedio.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>🎯 Reglas de Oro del Kardex</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="argumento-box">
+                    <strong>1. Entrada de mercancía:</strong> Se registra al costo histórico del día de la importación (según factura de MAPRINT).
+                </div>
+                <div class="argumento-box">
+                    <strong>2. Días posteriores sin compras:</strong> NO se hacen asientos por cambio de tasa. El inventario es partida no monetaria.
+                </div>
+                <div class="argumento-box">
+                    <strong>3. Nueva compra:</strong> Se registra a la nueva tasa y se recalcula el Promedio Ponderado.
+                </div>
+                <div class="argumento-box">
+                    <strong>4. Venta:</strong> El Costo de Venta SIEMPRE sale del Promedio Ponderado, NUNCA de la tasa del día.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TAB 6: ASIENTOS -->
+    <div class="tab-content" id="tab6">
+        
+        <div class="resumen-card">
+            <h2><span class="emoji">📝</span>Asientos Contables</h2>
+            <p>La partida doble es nuestra mejor defensa. Cada número tiene un documento que lo respalda.</p>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>📥 Asiento de Compra (Entrada a Almacén)</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <p><strong>Supuesto:</strong> Importación de 1,000 unidades. MAPRINT factura a 120 CUP/USD.</p>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cuenta</th>
+                                <th>Concepto</th>
+                                <th>Debe</th>
+                                <th>Haber</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>105 - Inventario</strong></td>
+                                <td>1,000 und × 1,299 CUP</td>
+                                <td><strong>1,299,000</strong></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><strong>111 - Banco CUP</strong></td>
+                                <td>Pago a MAPRINT + flete</td>
+                                <td></td>
+                                <td><strong>1,299,000</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="argumento-box">
+                    <strong>✓ La partida doble cuadra perfectamente</strong> porque el banco realmente debitó ese monto.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>📤 Asiento de Venta (Ingreso + Costo)</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <p><strong>Supuesto:</strong> Venta de 150 unidades a 6,000 CUP c/u. Costo promedio: 3,850 CUP.</p>
+                
+                <h4 style="color:var(--azul-principal); margin:15px 0 10px;">Asiento A - Registro del Ingreso:</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cuenta</th>
+                                <th>Concepto</th>
+                                <th>Debe</th>
+                                <th>Haber</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>111 - Banco</strong></td>
+                                <td>Cobro total (PV + IVS)</td>
+                                <td><strong>990,000</strong></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><strong>400 - Ventas</strong></td>
+                                <td>150 × 6,000</td>
+                                <td></td>
+                                <td><strong>900,000</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>2xx - IVS</strong></td>
+                                <td>10% sobre ventas</td>
+                                <td></td>
+                                <td><strong>90,000</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 style="color:var(--azul-principal); margin:15px 0 10px;">Asiento B - Registro del Costo:</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cuenta</th>
+                                <th>Concepto</th>
+                                <th>Debe</th>
+                                <th>Haber</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>600 - Costo Venta</strong></td>
+                                <td>150 × 3,850 (Promedio)</td>
+                                <td><strong>577,500</strong></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><strong>105 - Inventario</strong></td>
+                                <td>Salida del almacén</td>
+                                <td></td>
+                                <td><strong>577,500</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="alerta-box">
+                    <strong>⚠️ NOTA CRÍTICA:</strong> El costo de venta (577,500) sale del Promedio Ponderado del Kardex, NO de la tasa flotante del día de la venta.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>❌ Lo que NO debemos hacer</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="comparador-item comparador-incorrecto">
+                    <h4>✗ Error que la ONAT nos pide cometer</h4>
+                    <ul>
+                        <li>Registrar inventario a tasa flotante cuando el banco debitó a 120</li>
+                        <li>Revaluar inventario diariamente según tasa del BCC</li>
+                        <li>Usar tasa del día de venta para calcular costo</li>
+                        <li>Falsear conciliación bancaria</li>
+                        <li>Inventar pasivos o diferencias de cambio ficticias</li>
+                    </ul>
+                </div>
+                <div class="alerta-box" style="margin-top:15px;">
+                    <strong>Estas acciones violan:</strong> NEC 17, NEC 6, Principio de Costo Histórico, y constituirían fraude contable.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TAB 7: PRECIOS -->
+    <div class="tab-content" id="tab7">
+        
+        <div class="resumen-card">
+            <h2><span class="emoji">💰</span>Formación del Precio de Venta</h2>
+            <p>Cómo fijar precios legalmente respetando los topes del MFP sin descapitalizar la empresa.</p>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>📋 Estructura Legal de la Ficha de Costo</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Concepto</th>
+                                <th>Monto</th>
+                                <th>Fundamento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Costo Histórico (Kardex)</td>
+                                <td><strong>350 CUP</strong></td>
+                                <td>Factura MAPRINT - NEC 6</td>
+                            </tr>
+                            <tr>
+                                <td>(+) Gastos Operativos</td>
+                                <td><strong>80 CUP</strong></td>
+                                <td>Fletes, almacén, salarios, luz, comisiones</td>
+                            </tr>
+                            <tr>
+                                <td>(=) Costo Total</td>
+                                <td><strong>430 CUP</strong></td>
+                                <td>Suma documentada</td>
+                            </tr>
+                            <tr>
+                                <td>(+) Margen Legal (30%)</td>
+                                <td><strong>129 CUP</strong></td>
+                                <td>Resolución MFP</td>
+                            </tr>
+                            <tr style="background:var(--verde-suave);">
+                                <td><strong>Precio de Venta</strong></td>
+                                <td><strong>559 CUP</strong></td>
+                                <td>Ficha de Costo Legal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>🎯 Componente USD vs Registro en CUP</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="info-box">
+                    <strong>Moneda Funcional (La Ley):</strong> El CUP. Todos los libros contables deben estar en CUP.
+                </div>
+                <div class="info-box">
+                    <strong>Moneda de Referencia (Comercial):</strong> El USD se usa como cláusula de protección contra la devaluación. No es cobro en dólares, es referencia para fijar el precio en CUP.
+                </div>
+                <div class="argumento-box">
+                    <strong>Regla:</strong> La tasa flotante del día SÍ se usa para fijar el Precio de Venta (protección comercial), pero NUNCA para calcular el Costo de Venta en los libros.
+                </div>
+            </div>
+        </div>
+
+        <div class="alerta-box">
+            <strong>⚠️ TRAMPA DEL MFP:</strong> Si el precio de venta parece muy alto comparado con el costo histórico, la defensa NO es "es que el dólar subió". La defensa es: "Mi precio incluye gastos operativos reales documentados que reflejan la realidad de operar con tasa flotante".
+        </div>
+
+    </div>
+
+    <!-- TAB 8: DEFENSA -->
+    <div class="tab-content" id="tab8">
+        
+        <div class="resumen-card">
+            <h2><span class="emoji">🛡️</span>Argumentos de Defensa</h2>
+            <p>Los 5 pilares fundamentales para refutar el reparo de la ONAT.</p>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>1️⃣ Costo Histórico y Soporte Documental</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="argumento-box">
+                    <strong>Argumento:</strong> "Nuestra contabilidad refleja exactamente lo que el Estado (BCC y MAPRINT) nos cobró y facturó. Tenemos la cadena de evidencia perfecta: contrato BCC → factura MAPRINT → débito bancario → registro contable."
+                </div>
+                <div class="alerta-box">
+                    <strong>Si la ONAT insiste:</strong> "Exigirnos registrar a tasa flotante cuando el banco debitó a 120 es obligarnos a falsear la contabilidad y violar la NEC 17."
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>2️⃣ Inventario = Partida No Monetaria</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="argumento-box">
+                    <strong>Argumento:</strong> "Según la NEC 17, el inventario es una partida no monetaria. Una vez registrado al costo histórico, NO se revalúa por fluctuaciones cambiarias. Es la norma contable vigente."
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>3️⃣ Presunción de Legalidad de MAPRINT</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="argumento-box">
+                    <strong>Argumento:</strong> "MAPRINT es entidad estatal. Sus facturas gozan de presunción de legalidad. Si la ONAT considera que MAPRINT aplicó mal la tasa, debe auditar a MAPRINT, no a nosotros que fuimos clientes de buena fe."
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>4️⃣ Confianza Legítima y Deber de Notificación</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="argumento-box">
+                    <strong>Argumento:</strong> "MAPRINT nunca nos notificó un cambio de segmento. Actuamos de buena fe confiando en la facturación estatal. El principio de confianza legítima nos ampara."
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>5️⃣ El Mes de Mayo fue un Error Subsanado</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="argumento-box">
+                    <strong>Argumento:</strong> "En mayo registramos a tasa flotante por exceso de prudencia. Al cruzar con los documentos fuente, detectamos el error y lo subsanamos. Ese error provocó que pagáramos MÁS IVS al Estado ese mes, no menos."
+                </div>
+                <div class="alerta-box">
+                    <strong>Conclusión:</strong> "No pueden usar un error subsanado que favoreció al fisco como prueba de evasión."
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <div class="accordion-header">
+                <span>📢 Petitorio Final</span>
+                <span class="icon">▼</span>
+            </div>
+            <div class="accordion-body">
+                <div class="info-box">
+                    <strong>Solicitamos a la ONAT Provincial:</strong>
+                    <ol style="margin-left:20px; margin-top:10px;">
+                        <li>Revocar el reparo fiscal por carecer de fundamento legal</li>
+                        <li>Reconocer la validez del registro a 120 CUP/USD según factura MAPRINT</li>
+                        <li>Elevar el caso al Departamento Jurídico si persiste la discrepancia</li>
+                        <li>Solicitar Dictamen Técnico al BCC sobre la canalización por Segmento II</li>
+                        <li>Suspender medidas cautelares hasta resolución definitiva</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="resumen-card" style="border-left-color: var(--verde-exito);">
+            <h2 style="color: var(--verde-exito);"><span class="emoji">✅</span>Conclusión</h2>
+            <p>Nuestra contabilidad cumple estrictamente con:</p>
+            <ul style="margin-left:20px; margin-top:10px;">
+                <li>✓ Resolución 127/2025 del BCC</li>
+                <li>✓ Resolución 373/2025 del MFP (NEC 17)</li>
+                <li>✓ NEC 6 (Inventarios)</li>
+                <li>✓ Ley 113 del Sistema Tributario</li>
+                <li>✓ Principios de Contabilidad Generalmente Aceptados</li>
+            </ul>
+            <p style="margin-top:15px;"><strong>No hay evasión. Hay estricto cumplimiento normativo.</strong></p>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+        <p><strong>Defensa Técnica ONAT - MIPYME Importadora</strong></p>
+        <p>Documento elaborado el 28 de octubre de 2026</p>
+        <p style="margin-top:10px; font-size:11px;">Este documento es orientativo. Se recomienda asesoría legal profesional.</p>
+    </footer>
+
+</div>
+
+<!-- BOTÓN VOLVER ARRIBA -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0, behavior:'smooth'})">↑</button>
+
+<script>
+    // NAVEGACIÓN POR PESTAÑAS
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabId = btn.dataset.tab;
+            
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            btn.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+            
+            // Scroll suave al inicio del contenido
+            window.scrollTo({ top: 200, behavior: 'smooth' });
+        });
+    });
+    
+    // ACORDEONES
+    const accordions = document.querySelectorAll('.accordion');
+    accordions.forEach(acc => {
+        acc.querySelector('.accordion-header').addEventListener('click', () => {
+            acc.classList.toggle('open');
+        });
+    });
+    
+    // CALCULADORA
+    const segmentoSelect = document.getElementById('segmento');
+    const tasaFlotanteGroup = document.getElementById('tasaFlotanteGroup');
+    
+    segmentoSelect.addEventListener('change', () => {
+        if (segmentoSelect.value === 'flotante') {
+            tasaFlotanteGroup.style.display = 'block';
+        } else {
+            tasaFlotanteGroup.style.display = 'none';
+        }
+    });
+    
+    function calcular() {
+        const valorUSD = parseFloat(document.getElementById('valorUSD').value);
+        const gastos = parseFloat(document.getElementById('gastos').value);
+        let tasa, tasaTexto;
+        
+        if (segmentoSelect.value === 'flotante') {
+            tasa = parseFloat(document.getElementById('tasaFlotante').value);
+            tasaTexto = tasa + ' CUP/USD (Flotante)';
+        } else {
+            tasa = 120;
+            tasaTexto = '120 CUP/USD (Segmento II)';
+        }
+        
+        const contravalor = valorUSD * tasa;
+        const total = contravalor + gastos;
+        
+        document.getElementById('resUSD').textContent = valorUSD.toLocaleString('es-CU') + ' USD';
+        document.getElementById('resTasa').textContent = tasaTexto;
+        document.getElementById('resContravalor').textContent = contravalor.toLocaleString('es-CU') + ' CUP';
+        document.getElementById('resGastos').textContent = gastos.toLocaleString('es-CU') + ' CUP';
+        document.getElementById('resTotal').textContent = total.toLocaleString('es-CU') + ' CUP';
+        
+        document.getElementById('resultado').classList.add('visible');
+    }
+    
+    // BOTÓN VOLVER ARRIBA
+    const backTop = document.getElementById('backTop');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backTop.classList.add('visible');
+        } else {
+            backTop.classList.remove('visible');
+        }
+    });
+    
+    // INICIALIZAR CALCULADORA
+    calcular();
+</script>
+
+</body>
+</html>
